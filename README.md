@@ -8,7 +8,7 @@ This is a simple web-based tool for comparing XML mappings between Dev and Prod 
 - Displays results in an easy-to-read table.
 
 ## Installation
-No installation needed! Just open `index.html` in a browser.
+No installation needed! Just open `https://gouthams11.github.io/ommappingcompare/` in a browser.
 
 ## Usage
 1. Paste the Dev XML into the first text box.
