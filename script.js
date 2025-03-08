@@ -17,7 +17,11 @@ function extractMappings(xmlDoc) {
             let leftPath = cond.getElementsByTagName("LeftExtractor")[0]?.getElementsByTagName("Value")[0]?.textContent || "";
             let operator = cond.getElementsByTagName("Operator")[0]?.textContent || "";
             let rightValue = cond.getElementsByTagName("RightExtractor")[0]?.getElementsByTagName("Value")[0]?.textContent || "";
-            conditions.push(`${leftPath} ${operator === 'EQ' ? '=' : '≠'} ${rightValue}`);
+
+            // Handling different operators
+            let operatorSymbol = getOperatorSymbol(operator);
+
+            conditions.push(`${leftPath} ${operatorSymbol} ${rightValue}`);
         }
 
         let mappingName = receiver.getElementsByTagName("Mapping")[0]?.getElementsByTagName("Name")[0]?.textContent || "Unknown";
@@ -25,11 +29,26 @@ function extractMappings(xmlDoc) {
         mappings.push({
             component, 
             operation, 
-            condition: conditions.join(" AND "), 
+            condition: conditions.join(" "), // Ensure proper joining
             om: mappingName
         });
     }
     return mappings;
+}
+
+// Function to map operators to readable symbols
+function getOperatorSymbol(operator) {
+    const operators = {
+        "EQ": "=",  // Equal
+        "NE": "≠",  // Not Equal
+        "LT": "<",  // Less Than
+        "GT": ">",  // Greater Than
+        "LE": "≤",  // Less Than or Equal
+        "GE": "≥",  // Greater Than or Equal
+        "AND": "AND",
+        "OR": "OR"
+    };
+    return operators[operator] || operator; // Default to operator if not found
 }
 
 function compareXML() {
